@@ -1,0 +1,23 @@
+name: 07 - Testes do PR (vulneravel)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Preparar ambiente
+        run: |
+          echo "Rodando testes para a branch: ${{ github.head_ref }}"
+
+      - name: Rodar testes
+        run: echo "Testes concluidos"

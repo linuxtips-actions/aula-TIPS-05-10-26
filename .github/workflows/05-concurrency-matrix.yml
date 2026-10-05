@@ -1,5 +1,3 @@
-# DEMO 5 — concurrency + matrix sem fail-fast.
-# Faça dois pushes seguidos: o primeiro run é cancelado.
 name: 05 - Concurrency e matrix
 
 on:

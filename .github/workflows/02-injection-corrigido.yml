@@ -1,5 +1,3 @@
-# DEMO 2 — mesma lógica, sem injection.
-# O título entra como variável de ambiente: o shell trata como DADO, não como código.
 name: 02 - Triagem de issue (corrigido)
 
 on:

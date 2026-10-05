@@ -1,0 +1,25 @@
+name: 08 - Testes do PR (corrigido)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Preparar ambiente
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          echo "Rodando testes para a branch: $HEAD_REF"
+
+      - name: Rodar testes
+        run: echo "Testes concluidos"

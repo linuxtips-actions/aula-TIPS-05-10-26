@@ -1,5 +1,3 @@
-# DEMO 1 — workflow VULNERÁVEL a script injection.
-# Não deixe este arquivo ativo em repositório público depois da live.
 name: 01 - Triagem de issue (vulnerável)
 
 on:

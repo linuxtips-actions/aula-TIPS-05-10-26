@@ -1,6 +1,3 @@
-# DEMO 3 — actions fixadas por SHA + permissões mínimas.
-# Para descobrir o SHA de uma tag:
-#   git ls-remote https://github.com/actions/checkout refs/tags/v4.2.2
 name: 03 - CI com actions fixadas
 
 on:
@@ -8,7 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Tudo desligado por padrão; cada job pede só o que precisa.
 permissions: {}
 
 jobs:
