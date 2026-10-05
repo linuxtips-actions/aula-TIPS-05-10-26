@@ -1,0 +1,7 @@
+# Dependabot abre PRs atualizando o SHA (e o comentário da versão) das actions.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

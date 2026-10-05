@@ -1,0 +1,20 @@
+# DEMO 2 — mesma lógica, sem injection.
+# O título entra como variável de ambiente: o shell trata como DADO, não como código.
+name: 02 - Triagem de issue (corrigido)
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: read
+
+jobs:
+  triagem:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Registrar nova issue
+        env:
+          TITULO: ${{ github.event.issue.title }}
+        run: |
+          echo "Nova issue recebida: $TITULO"

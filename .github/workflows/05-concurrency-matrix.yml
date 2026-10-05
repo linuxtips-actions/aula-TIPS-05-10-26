@@ -1,0 +1,34 @@
+# DEMO 5 — concurrency + matrix sem fail-fast.
+# Faça dois pushes seguidos: o primeiro run é cancelado.
+name: 05 - Concurrency e matrix
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false        # uma versão falhando NÃO cancela as outras
+      max-parallel: 2
+      matrix:
+        node: [18, 20, 22]
+        include:
+          - node: 22
+            experimental: true
+    steps:
+      - run: |
+          echo "Testando no Node ${{ matrix.node }} (experimental=${{ matrix.experimental || false }})"
+          sleep 30
+      - if: ${{ matrix.node == 18 }}
+        run: |
+          echo "::warning title=Node 18::Versão fora de suporte"
+          exit 1

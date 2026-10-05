@@ -1,0 +1,28 @@
+# DEMO 6 — resumo visual da execução com $GITHUB_STEP_SUMMARY.
+name: 06 - Job summary
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  relatorio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Gerar resumo
+        run: |
+          {
+            echo "## Resultado do pipeline :rocket:"
+            echo ""
+            echo "| Etapa | Status | Tempo |"
+            echo "|---|---|---|"
+            echo "| Lint | ✅ passou | 12s |"
+            echo "| Testes | ✅ 42/42 | 1m03s |"
+            echo "| Scan Trivy | ⚠️ 2 HIGH | 35s |"
+            echo ""
+            echo "> Commit \`${GITHUB_SHA::7}\` por @${GITHUB_ACTOR}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Anotação apontando arquivo e linha
+        run: echo "::warning file=app/index.js,line=10,title=Lint::Variável não utilizada"

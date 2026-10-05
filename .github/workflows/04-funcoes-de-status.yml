@@ -1,0 +1,57 @@
+# DEMO 4 — funções de status e o "skip em cascata".
+# Rode duas vezes: com falhar=false e com falhar=true.
+name: 04 - Funções de status
+
+on:
+  workflow_dispatch:
+    inputs:
+      falhar:
+        description: "Forçar falha no build?"
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Buildando..."
+      - if: ${{ inputs.falhar }}
+        run: exit 1
+
+  # Job opcional que normalmente é pulado (ex.: só roda em tag).
+  docs:
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    steps:
+      - run: echo "Publicando docs"
+
+  # PROBLEMA: depende de um job pulado -> também é pulado, mesmo com build OK.
+  deploy-ingenuo:
+    needs: [build, docs]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy (nunca roda se docs for pulado)"
+
+  # CORREÇÃO: roda se nada falhou e nada foi cancelado.
+  deploy:
+    needs: [build, docs]
+    if: ${{ !failure() && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy OK — build=${{ needs.build.result }}, docs=${{ needs.docs.result }}"
+
+  notificar-falha:
+    needs: [build]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "::error::Build falhou — avisando o time"
+
+  limpeza:
+    needs: [build, deploy]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Limpando recursos temporários (roda sempre)"
